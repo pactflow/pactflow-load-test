@@ -1,7 +1,7 @@
 {
   "name": "pactflow-load-test-kit",
   "version": "1.0.0",
-  "description": "",
+  "description": "Basic load test script to exercise a Pactflow installation",
   "main": "load-test-functions.js",
   "scripts": {
     "setup": "artillery run -k -e dev setup.yml",
