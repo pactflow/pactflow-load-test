@@ -40,9 +40,11 @@ It is not recommended to run this on your production system, or a system that a 
 
 The setup is configurable for multiple environments with the `-e` switch.
 
-### 1. Set the authentication token for the test
+### 1. Set the host & authentication token for the test
 
-Get a read/write API token from your running Pactflow instance, and update the Bearer token in `./fixtures/accounts-dev.csv`.
+* Update the Host (default is `localhost`) `./fixtures/accounts-dev.csv` to the hostname of your Pactflow instance (do not include the protocol here)
+* Get a read/write API token from your running Pactflow instance Bearer token in `./fixtures/accounts-dev.csv`.
+* Set the `environments.dev.target` URL in `./baseline.yml` to your running Pactflow instance
 
 ### 2. Setup base data
 
