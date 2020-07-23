@@ -6,6 +6,11 @@ The goals of this test framework are threefold:
 1. Understand scaling properties of your platform - e.g. CPU, I/O or network bound. This should help you tune autoscaling, metrics and alarms.
 1. Understand the limits of the system
 
+<p align="center">
+  <img src="./docs/artillery-report.png">
+</p>
+
+
 ## Installation
 
 *Prerequisites*
@@ -38,6 +43,10 @@ npm run setup
 ```
 npm run load
 ```
+
+<p align="center">
+  <img src="./docs/artillery-cli-report.png">
+</p>
 
 ### 4. Review the report
 
