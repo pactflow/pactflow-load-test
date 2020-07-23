@@ -98,4 +98,4 @@ See https://artillery.io/ for complete documentation on the tool.
 
 Trick question! This is really intended for ephemeral infrastructure or testing out the performance of a new stack.
 
-There is no simple way to cleanup here; tear down and rebuild the stack.
+The teardown script is a "best effort" type thing - any customisations to the script may make cleaning up quite difficult. There is no simple way to cleanup here; tear down and rebuild the stack.
