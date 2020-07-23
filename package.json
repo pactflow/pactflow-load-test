@@ -1,0 +1,17 @@
+{
+  "name": "pactflow-load-test-kit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "load-test-functions.js",
+  "scripts": {
+    "setup": "artillery run -k -e dev setup.yml",
+    "load": "artillery run -k -e dev baseline.yml -o output.json",
+    "report": "artillery report output.json"
+  },
+  "author": "Matt Fellows",
+  "license": "ISC",
+  "devDependencies": {
+    "artillery": "^1.6.1",
+    "faker": "^4.1.0"
+  }
+}
