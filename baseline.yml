@@ -1,7 +1,7 @@
 config:
   target: 'http://localhost'
   phases:
-    - duration: 10
+    - duration: 30
       arrivalRate: 10
       name: "Maintain 10 concurrent scenarios for 60s"
   http:

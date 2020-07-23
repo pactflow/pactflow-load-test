@@ -5,6 +5,7 @@
   "main": "load-test-functions.js",
   "scripts": {
     "setup": "artillery run -k -e dev setup.yml",
+    "teardown": "artillery run -k -e dev teardown.yml",
     "load": "artillery run -k -e dev baseline.yml -o output.json",
     "report": "artillery report output.json"
   },

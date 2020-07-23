@@ -1,0 +1,53 @@
+config:
+  target: 'http://localhost'
+  phases:
+    - duration: 100
+      arrivalRate: 2
+  http:
+    tls:
+      rejectUnauthorized: true
+  environments:
+    dev:
+      target: "http://localhost"
+  payload:
+    -
+      path: "./fixtures/accounts-{{ $environment }}.csv"
+      fields:
+        - "host"
+        - "authorization"
+      order: "sequence"
+    -
+      path: "./fixtures/pacticipants.csv"
+      fields:
+        - "consumer"
+        - "provider"
+      order: "sequence"
+  processor: "./src/load-test-functions.js"
+
+scenarios:
+  # API publishing and retrieval
+  # This will publish to one of different consumer/provider pairs _per virtual user_ (each version should be different)
+  # and then tag them with 'dev' and 'prod'
+  - name: Publish pacts
+    flow:
+      - log: "Deleting integration between {{consumer}}<->{{provider}} on broker {{host}}"
+      - delete:
+          url: "/integrations/provider/{{provider}}/consumer/{{consumer}}"
+          headers:
+            Host: "{{ host }}"
+            Authorization: "{{ authorization }}"
+            Accept: "*/*"
+      - log: "Deleting Pacticipant {{provider}} on broker {{host}}"
+      - delete:
+          url: "/pacticipants/{{provider}}"
+          headers:
+            Host: "{{ host }}"
+            Authorization: "{{ authorization }}"
+            Accept: "*/*"
+      - log: "Deleting Pacticipant {{consumer}} on broker {{host}}"
+      - delete:
+          url: "/pacticipants/{{consumer}}"
+          headers:
+            Host: "{{ host }}"
+            Authorization: "{{ authorization }}"
+            Accept: "*/*"
