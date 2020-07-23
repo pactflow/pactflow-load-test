@@ -1,15 +1,12 @@
 # Load Testing a Pactflow On-Premise Installation
 
+A simple load test for Pactflow installations.
+
 The goals of this test framework are threefold:
 
-1. Have a way to quickly get a base, representative load through the system, so that we can run resilience, chaos and other tests and understand the potential impact to users
-1. Understand scaling properties of your platform - e.g. CPU, I/O or network bound. This should help you tune autoscaling, metrics and alarms.
+1. Create a base, representative load through a pactflow installation, so that you can run resilience, chaos and other tests to understand the potential impact to users
+1. Understand scaling properties - e.g. is it CPU, I/O or network bound - in order to tune autoscaling, metrics and alarms
 1. Understand the limits of the system
-
-<p align="center">
-  <img src="./docs/artillery-report.png">
-</p>
-
 
 ## Installation
 
@@ -69,6 +66,13 @@ npm run load
 ```
 npm run report
 ```
+
+It should produce a pretty report that looks something like this:
+
+<p align="center">
+  <img src="./docs/artillery-report.png">
+</p>
+
 
 ### 5. Teardown/Cleanup
 
