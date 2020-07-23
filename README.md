@@ -11,6 +11,7 @@ The goals of this test framework are threefold:
 *Prerequisites*
 * NodeJS v8+
 * npm 5+
+* A running Pactflow system
 
 ```
 npm i
