@@ -1,6 +1,6 @@
-# Load Testing a Pactflow On-Premise Installation
+# Load Testing a PactFlow On-Premise Installation
 
-A simple load test for Pactflow installations.
+A simple load test for PactFlow installations.
 
 The goals of this test framework are threefold:
 
@@ -13,7 +13,7 @@ The goals of this test framework are threefold:
 *Prerequisites*
 * NodeJS v8+
 * npm 5+
-* A running Pactflow system
+* A running PactFlow system
 
 ```
 npm i
@@ -39,9 +39,9 @@ The setup is configurable for multiple environments with the `-e` switch.
 
 ### 1. Set the host & authentication token for the test
 
-* Update the Host (default is `localhost`) `./fixtures/accounts-dev.csv` to the hostname of your Pactflow instance (do not include the protocol here)
-* Get a read/write API token from your running Pactflow instance Bearer token in `./fixtures/accounts-dev.csv`.
-* Set the `environments.dev.target` URL in `./baseline.yml` to your running Pactflow instance
+* Update the Host (default is `localhost`) `./fixtures/accounts-dev.csv` to the hostname of your PactFlow instance (do not include the protocol here)
+* Get a read/write API token from your running PactFlow instance Bearer token in `./fixtures/accounts-dev.csv`.
+* Set the `environments.dev.target` URL in `./baseline.yml` to your running PactFlow instance
 
 ### 2. Setup base data
 
@@ -84,7 +84,7 @@ npm run teardown
 
 ### Adjusting the scenarios
 
-The scenarios are currently loosely balanced based on the mix that we (Pactflow) see on our cloud platform. You may need to adjust the mix for your specific needs.
+The scenarios are currently loosely balanced based on the mix that we (PactFlow) see on our cloud platform. You may need to adjust the mix for your specific needs.
 
 The current scenarios we support:
 
