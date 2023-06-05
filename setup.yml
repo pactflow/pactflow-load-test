@@ -1,5 +1,5 @@
 config:
-  target: 'http://localhost'
+  target: 'https://bethtest.test.pactflow.io'
   phases:
     - duration: 100
       arrivalRate: 2
@@ -8,7 +8,7 @@ config:
       rejectUnauthorized: true
   environments:
     dev:
-      target: "http://localhost"
+      target: "https://bethtest.test.pactflow.io"
   payload:
     -
       path: "./fixtures/accounts-{{ $environment }}.csv"

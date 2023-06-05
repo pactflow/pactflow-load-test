@@ -1,6 +1,6 @@
 config:
   phases:
-    - duration: 30
+    - duration: 60
       arrivalRate: 10
       name: "Maintain 10 concurrent scenarios for 60s"
   http:
@@ -8,7 +8,7 @@ config:
       rejectUnauthorized: true
   environments:
     dev:
-      target: "http://localhost"
+      target: "https://bethtest.test.pactflow.io"
   variables:
     ui:
       - "/"
@@ -25,19 +25,40 @@ config:
       fields:
         - "host"
         - "authorization"
-    -
-      path: "./fixtures/pacticipants.csv"
-      fields:
-        - "consumer"
-        - "provider"
+    # -
+    #   path: "./fixtures/pacticipants.csv"
+    #   fields:
+    #     - "consumer"
+    #     - "provider"
 
   processor: "./src/load-test-functions.js"
 
 scenarios:
-  # Scenario: Find a random provider, navigate to their latest pacts and select a random pact
+#  Scenario: Find a random provider, navigate to their latest pacts and select a random pact
   - name: Test provider verification
     weight: 4
     flow:
+    - get:
+        url: "/pacticipants?pageNumber=1&pageSize=1"
+        headers:
+          Host: "{{ host }}"
+          Authorization: "{{ authorization }}"
+        capture:
+          json: "$['page']['totalPages']"
+          as: "totalPages"
+
+    - get:
+        beforeRequest: "selectRandomPageFromTotalPages"
+        url: "/pacticipants?pageNumber={{randomPageNumber}}&pageSize=1"
+        headers:
+          Host: "{{ host }}"
+          Authorization: "{{ authorization }}"
+        capture:
+          json: "$['_links']['pb:pacticipants'][0]['name']"
+          as: "provider"
+
+    - log: "Provider is {{provider}}"
+
     - get:
         url: "/pacts/provider/{{provider}}"
         headers:
@@ -46,7 +67,9 @@ scenarios:
         capture:
           json: "$['_links']['pb:pacts'][(@.rand())]['href']"
           as: "rel"
-    - log: "Have pact: {{rel}}"
+
+    - log: "Might have pact (or application might not be a provider): {{rel}}"
+
     - get:
         url: "{{rel}}"
         headers:
@@ -55,7 +78,9 @@ scenarios:
         capture:
           json: "$['_links']['pb:publish-verification-results']['href']"
           as: "rel"
-    - log: "Sending POST verification results to {{rel}}"
+        ifTrue: "rel"
+
+    - log: "Might be sending POST verification results to {{rel}}"
     - post:
         url: "{{rel}}"
         headers:
@@ -67,62 +92,64 @@ scenarios:
           success: true
           providerApplicationVersion: "4.5.6"
           buildUrl: "http://my-ci.org/build/3456"
+        ifTrue: "rel"
 
   # Perform a GET on a randomised resource
-  - name: Test API queries
-    weight: 1
-    flow:
-    - get:
-        url: "{{ api }}"
-        headers:
-          Host: "{{ host }}"
-          Authorization: "{{ authorization }}"
+  # - name: Test API queries
+  #   weight: 1
+  #   flow:
+  #   - get:
+  #       url: "{{ api }}"
+  #       headers:
+  #         Host: "{{ host }}"
+  #         Authorization: "{{ authorization }}"
 
   # Create a webhook for a random provider
-  - name: Create webhook
-    weight: 1
-    flow:
-    - get:
-        url: "/"
-        headers:
-          Host: "{{ host }}"
-          Authorization: "{{ authorization }}"
-        capture:
-          json: "$['_links']['pb:webhooks']['href']"
-          as: "rel"
-    - log: "Have webhook URL: {{rel}}"
-    - post:
-        url: "{{rel}}"
-        headers:
-          Host: "{{ host }}"
-          Authorization: "{{ authorization }}"
-          Content-Type: "application/json"
-          Accept: "*/*"
-        json:
-          provider:
-            name: "{{provider}}"
-          events:
-            - name: "contract_content_changed"
-          request:
-            method: "POST"
-            url: "https://some-secure-host"
+  # - name: Create webhook
+  #   weight: 1
+  #   flow:
+  #   - get:
+  #       url: "/"
+  #       headers:
+  #         Host: "{{ host }}"
+  #         Authorization: "{{ authorization }}"
+  #       capture:
+  #         json: "$['_links']['pb:webhooks']['href']"
+  #         as: "rel"
+  #   - log: "Have webhook URL: {{rel}}"
+  #   - post:
+  #       url: "{{rel}}"
+  #       headers:
+  #         Host: "{{ host }}"
+  #         Authorization: "{{ authorization }}"
+  #         Content-Type: "application/json"
+  #         Accept: "*/*"
+  #       json:
+  #         provider:
+  #           name: "{{provider}}"
+  #         events:
+  #           - name: "contract_content_changed"
+  #         request:
+  #           method: "POST"
+  #           url: "https://some-secure-host"
 
   # UI
-  - name: Tests interactions via the UI
-    weight: 1
-    flow:
-    - get:
-        url: "{{ ui }}"
-        headers:
-          Host: "{{ host }}"
-          Authorization: "{{ authorization }}"
-          Accept: "text/html"
+  # - name: Tests interactions via the UI
+  #   weight: 1
+  #   flow:
+  #   - get:
+  #       url: "{{ ui }}"
+  #       headers:
+  #         Host: "{{ host }}"
+  #         Authorization: "{{ authorization }}"
+  #         Accept: "text/html"
 
   # API publishing and retrieval
   # This will publish to one of different consumer/provider pairs _per virtual user_ (each version should be different)
   # and then tag them with 'dev' and 'prod'
   - name: Publish pacts
     weight: 3
+    beforeScenario: "setupInteraction"
     flow:
       - log: "Creating pact for between {{consumer}}<->{{provider}} on broker {{host}}"
       - put:
@@ -139,7 +166,7 @@ scenarios:
             Authorization: "{{ authorization }}"
             Accept: "application/json"
       - put:
-          url: "/pacticipants/{{consumer}}/versions/{{version}}/tags/prod"
+          url: "/pacticipants/{{consumer}}/versions/{{version}}/tags/{{tag}}"
           headers:
             Host: "{{ host }}"
             Authorization: "{{ authorization }}"
