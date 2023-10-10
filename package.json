@@ -12,7 +12,7 @@
   "author": "Matt Fellows",
   "license": "ISC",
   "devDependencies": {
-    "artillery": "^1.7.9",
+    "artillery": "^2.0.0-37",
     "@faker-js/faker": "^8.1.0"
   }
 }
