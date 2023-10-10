@@ -1,5 +1,5 @@
 // Make sure to "npm install faker" first.
-const Faker = require('faker');
+const { faker } = require('@faker-js/faker');
 
 const generatePact = (consumer, provider) => (
 {
@@ -35,15 +35,15 @@ const generatePact = (consumer, provider) => (
           {
             "id": 1,
             "available_from": "2015-08-06T16:53:10.123+01:00",
-            "first_name": Faker.name.firstName(),
-            "last_name": Faker.name.lastName(),
+            "first_name": faker.person.firstName(),
+            "last_name": faker.person.lastName(),
             "animal": "goat",
             "age": 21,
             "gender": "M",
             "location": {
               "description": "Melbourne Zoo",
               "country": "Australia",
-              "post_code": Faker.address.zipCode
+              "post_code": faker.location.zipCode
             },
             "eligibility": {
               "available": true,
@@ -56,15 +56,15 @@ const generatePact = (consumer, provider) => (
           {
             "id": 1,
             "available_from": "2015-08-06T16:53:10.123+01:00",
-            "first_name": Faker.name.firstName(),
-            "last_name": Faker.name.lastName(),
+            "first_name": faker.person.firstName(),
+            "last_name": faker.person.lastName(),
             "animal": "goat",
             "age": 21,
             "gender": "M",
             "location": {
               "description": "Melbourne Zoo",
               "country": "Australia",
-              "post_code": Faker.address.zipCode
+              "post_code": faker.location.zipCode
             },
             "eligibility": {
               "available": true,
