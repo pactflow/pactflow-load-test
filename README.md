@@ -41,7 +41,7 @@ The setup is configurable for multiple environments with the `-e` switch.
 
 * Update the Host (default is `localhost`) `./fixtures/accounts-dev.csv` to the hostname of your PactFlow instance (do not include the protocol here)
 * Get a read/write API token from your running PactFlow instance Bearer token in `./fixtures/accounts-dev.csv`.
-* Set the `environments.dev.target` URL in `./baseline.yml` to your running PactFlow instance
+* Set the `environments.dev.target` URL in `./setup.yml`, `teardown.yml` and `./baseline.yml` to your running PactFlow instance.
 
 ### 2. Setup base data
 
